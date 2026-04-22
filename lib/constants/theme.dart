@@ -23,7 +23,13 @@ ThemeData get appTheme {
       ),
     ),
     scrollbarTheme: ScrollbarThemeData(
-      thumbColor: WidgetStateProperty.all(const Color(0xFF2A2A2A)),
+      thumbVisibility: WidgetStateProperty.all(true),
+      trackVisibility: WidgetStateProperty.all(true),
+      thickness: WidgetStateProperty.all(8),
+      radius: const Radius.circular(0),
+      thumbColor: WidgetStateProperty.all(const Color(0xFF3A3A3A)),
+      trackColor: WidgetStateProperty.all(const Color(0xFF1A1A1A)),
+      trackBorderColor: WidgetStateProperty.all(const Color(0xFF2A2A2A)),
     ),
     tooltipTheme: const TooltipThemeData(
       decoration: BoxDecoration(

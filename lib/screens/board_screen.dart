@@ -59,45 +59,33 @@ class _KanbanBoard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(taskProvider);
     final columnIds = state.columns.keys.toList();
-    final screenWidth = MediaQuery.of(context).size.width;
+    final scrollController = ScrollController();
 
-    final int crossAxisCount = screenWidth < 480
-        ? 1
-        : screenWidth < 768
-        ? 2
-        : screenWidth < 1100
-        ? 3
-        : 4;
-
-    final rows = <List<int>>[];
-    for (var i = 0; i < columnIds.length; i += crossAxisCount) {
-      rows.add(
-        columnIds.sublist(i, (i + crossAxisCount).clamp(0, columnIds.length)),
-      );
-    }
-
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: rows.map((rowIds) {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: 14,
-            children: rowIds.map((colId) {
-              return Expanded(
-                child: KanbanColumn(
-                  key: ValueKey(colId),
-                  columnId: colId,
-                  columnName: state.columns[colId]!,
-                  tasks: state.tasks[colId] ?? [],
-                  savingTasks: state.savingTasks,
-                  controller: controller,
-                ),
-              );
-            }).toList(),
-          );
-        }).toList(),
+    return Scrollbar(
+      controller: scrollController,
+      thumbVisibility: true,
+      trackVisibility: true,
+      child: SingleChildScrollView(
+        controller: scrollController,
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.fromLTRB(14, 14, 14, 20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 14,
+          children: columnIds.map((colId) {
+            return SizedBox(
+              width: 280,
+              child: KanbanColumn(
+                key: ValueKey(colId),
+                columnId: colId,
+                columnName: state.columns[colId]!,
+                tasks: state.tasks[colId] ?? [],
+                savingTasks: state.savingTasks,
+                controller: controller,
+              ),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
